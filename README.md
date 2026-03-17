@@ -1,5 +1,7 @@
 <!-- markdownlint-disable MD010 -->
 
+[Русская версия → RU_README.md](RU_README.md)
+
 # Shipment Tracking Service
 
 ---
@@ -257,3 +259,7 @@ For gRPC code generation I use `buf` — a toolchain for managing Protocol Buffe
 4. For convenience, I did not encapsulate some details in business logic, because that would require additional models at every layer.
 5. I limited tests to basic business-logic tests only.
 6. I use a simple global `slog`.
+
+## Screenshots
+![screenshot](./client.png)
+![screenshot](./server.png)

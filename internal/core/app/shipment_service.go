@@ -13,12 +13,12 @@ type ShipmentService interface {
 }
 type shipmentService struct {
 	shipmentRepo *sqlc.Queries
-	mediator     *Mediator
+	EventBus	 *EventBus
 }
 
-func NewShipmentService(shipmentRepo *sqlc.Queries, mediator *Mediator) *shipmentService {
+func NewShipmentService(shipmentRepo *sqlc.Queries, eventBus *EventBus) *shipmentService {
 	return &shipmentService{
 		shipmentRepo: shipmentRepo,
-		mediator:     mediator,
+		EventBus:     eventBus,
 	}
 }

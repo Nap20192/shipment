@@ -2,6 +2,7 @@ package spec_test
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 	"testing"
 
@@ -143,17 +144,51 @@ func TestDefaultTransitionSpec(t *testing.T) {
 	})
 
 	t.Run("Default configuration rules behave as expected", func(t *testing.T) {
-		ts, _ := spec.DefaultTransitionSpec()
-
-		shipment := domain.Shipment{Status: domain.StatusPending}
-		allow, err := ts.Check(shipment, domain.StatusInTransit)
-		if !allow || err != nil {
-			t.Errorf("Pending -> InTransit should be allowed, got allow=%v, err=%v", allow, err)
+		ts, err := spec.DefaultTransitionSpec()
+		if err != nil {
+			t.Fatalf("Failed to initialize default spec: %v", err)
 		}
 
-		allow, err = ts.Check(shipment, domain.StatusDelivered)
-		if allow || err == nil {
-			t.Errorf("Pending -> Delivered should be denied, got allow=%v, err=%v", allow, err)
+		tests := []struct {
+			from      domain.Status
+			to        domain.Status
+			wantAllow bool
+		}{
+			{from: domain.StatusPending, to: domain.StatusInTransit, wantAllow: true},
+			{from: domain.StatusPending, to: domain.StatusCancelled, wantAllow: true},
+			{from: domain.StatusPending, to: domain.StatusDelivered, wantAllow: false},
+
+			{from: domain.StatusInTransit, to: domain.StatusDelivered, wantAllow: true},
+			{from: domain.StatusInTransit, to: domain.StatusCancelled, wantAllow: true},
+			{from: domain.StatusInTransit, to: domain.StatusPending, wantAllow: false},
+
+			{from: domain.StatusDelivered, to: domain.StatusPending, wantAllow: false},
+			{from: domain.StatusDelivered, to: domain.StatusInTransit, wantAllow: false},
+			{from: domain.StatusDelivered, to: domain.StatusCancelled, wantAllow: false},
+
+			{from: domain.StatusCancelled, to: domain.StatusPending, wantAllow: false},
+			{from: domain.StatusCancelled, to: domain.StatusInTransit, wantAllow: false},
+			{from: domain.StatusCancelled, to: domain.StatusDelivered, wantAllow: false},
+		}
+
+		for _, tt := range tests {
+			testName := fmt.Sprintf("%s -> %s", tt.from, tt.to)
+
+			t.Run(testName, func(t *testing.T) {
+				shipment := domain.Shipment{Status: tt.from}
+				allow, err := ts.Check(shipment, tt.to)
+
+				if allow != tt.wantAllow {
+					t.Errorf("Check() allow = %v, want %v", allow, tt.wantAllow)
+				}
+
+				if tt.wantAllow && err != nil {
+					t.Errorf("Expected allowed transition to have no error, but got: %v", err)
+				}
+				if !tt.wantAllow && err == nil {
+					t.Errorf("Expected denied transition to return an error, but got nil")
+				}
+			})
 		}
 	})
 }

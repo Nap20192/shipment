@@ -4,7 +4,6 @@ import (
 	"net"
 
 	"github.com/Nap20192/shipment/internal/core/app"
-	"github.com/Nap20192/shipment/internal/pkg/sqlc"
 	pb "github.com/Nap20192/shipment/proto/gen"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -15,7 +14,7 @@ type Server struct {
 	listener   net.Listener
 }
 
-func NewServer(addr string, service app.ShipmentService, queries *sqlc.Queries, opts ...grpc.ServerOption) (*Server, error) {
+func NewServer(addr string, service app.ShipmentService, opts ...grpc.ServerOption) (*Server, error) {
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {
 		return nil, err
@@ -23,7 +22,7 @@ func NewServer(addr string, service app.ShipmentService, queries *sqlc.Queries, 
 
 	grpcServer := grpc.NewServer(opts...)
 
-	handler := NewShipmentHandler(service, queries)
+	handler := NewShipmentHandler(service)
 	pb.RegisterShipmentServiceServer(grpcServer, handler)
 	reflection.Register(grpcServer)
 

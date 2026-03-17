@@ -5,9 +5,7 @@ import (
 
 	"github.com/Nap20192/shipment/internal/core/app"
 	"github.com/Nap20192/shipment/internal/core/domain"
-	"github.com/Nap20192/shipment/internal/pkg/sqlc"
 	pb "github.com/Nap20192/shipment/proto/gen"
-	"github.com/google/uuid"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -15,13 +13,11 @@ import (
 type ShipmentHandler struct {
 	pb.UnimplementedShipmentServiceServer
 	service app.ShipmentService
-	queries *sqlc.Queries
 }
 
-func NewShipmentHandler(service app.ShipmentService, queries *sqlc.Queries) *ShipmentHandler {
+func NewShipmentHandler(service app.ShipmentService) *ShipmentHandler {
 	return &ShipmentHandler{
 		service: service,
-		queries: queries,
 	}
 }
 
@@ -58,18 +54,13 @@ func (h *ShipmentHandler) GetShipment(ctx context.Context, req *pb.GetShipmentRe
 		return nil, status.Error(codes.InvalidArgument, "id is required")
 	}
 
-	id, err := uuid.Parse(req.GetId())
-	if err != nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid shipment id")
-	}
-
-	shipment, err := h.queries.GetShipmentByID(ctx, id)
+	shipment, err := h.service.GetShipment(ctx, req.GetId())
 	if err != nil {
 		return nil, status.Errorf(codes.NotFound, "shipment not found: %v", err)
 	}
 
 	return &pb.GetShipmentResponse{
-		Shipment: sqlcShipmentToProto(shipment),
+		Shipment: domainShipmentToProto(shipment),
 	}, nil
 }
 
@@ -89,7 +80,7 @@ func (h *ShipmentHandler) UpdateShipmentStatus(ctx context.Context, req *pb.Upda
 	}
 
 	return &pb.UpdateShipmentStatusResponse{
-		Shipment: sqlcShipmentToProto(shipment),
+		Shipment: domainShipmentToProto(shipment),
 	}, nil
 }
 
@@ -98,19 +89,14 @@ func (h *ShipmentHandler) GetShipmentEventHistory(ctx context.Context, req *pb.G
 		return nil, status.Error(codes.InvalidArgument, "shipment_id is required")
 	}
 
-	id, err := uuid.Parse(req.GetShipmentId())
-	if err != nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid shipment id")
-	}
-
-	events, err := h.queries.GetShipmentEventHistory(ctx, id)
+	events, err := h.service.History(ctx, req.GetShipmentId())
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get event history: %v", err)
 	}
 
 	pbEvents := make([]*pb.ShipmentEvent, 0, len(events))
 	for _, e := range events {
-		pbEvents = append(pbEvents, sqlcEventToProto(e))
+		pbEvents = append(pbEvents, eventDTOToProto(e))
 	}
 
 	return &pb.GetShipmentEventHistoryResponse{

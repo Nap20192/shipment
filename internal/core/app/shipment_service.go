@@ -67,7 +67,6 @@ func (s *shipmentService) CreateShipment(ctx context.Context, origin, destinatio
 
 func (s *shipmentService) UpdateShipmentStatus(ctx context.Context, id string, statusStr string) (domain.Shipment, error) {
 	shipment, err := s.GetShipment(ctx, id)
-
 	if err != nil {
 		return domain.Shipment{}, err
 	}

@@ -1,4 +1,4 @@
-package spec_test
+package spec
 
 import (
 	"errors"
@@ -7,7 +7,6 @@ import (
 	"testing"
 
 	"github.com/Nap20192/shipment/internal/core/domain"
-	"github.com/Nap20192/shipment/internal/core/domain/spec"
 )
 
 var errMockRuleDeny = errors.New("mock rule denied transition")
@@ -22,21 +21,20 @@ func (m mockRule) Check(shipment domain.Shipment, newStatus domain.Status) (bool
 }
 
 func TestTransitionValidation_Check(t *testing.T) {
-	ts, err := spec.NewTransitionSpec(
-		spec.WithRule(domain.StatusPending, domain.StatusInTransit, mockRule{allow: true, err: nil}),
-		spec.WithRule(domain.StatusPending, domain.StatusDelivered, mockRule{allow: false, err: errMockRuleDeny}),
-		spec.WithRule(domain.StatusPending, domain.StatusCancelled, mockRule{allow: true, err: nil}),
-		spec.WithRule(domain.StatusInTransit, domain.StatusPending, mockRule{allow: true, err: nil}),
-		spec.WithRule(domain.StatusInTransit, domain.StatusDelivered, mockRule{allow: true, err: nil}),
-		spec.WithRule(domain.StatusInTransit, domain.StatusCancelled, mockRule{allow: true, err: nil}),
-		spec.WithRule(domain.StatusDelivered, domain.StatusPending, mockRule{allow: true, err: nil}),
-		spec.WithRule(domain.StatusDelivered, domain.StatusInTransit, mockRule{allow: true, err: nil}),
-		spec.WithRule(domain.StatusDelivered, domain.StatusCancelled, mockRule{allow: true, err: nil}),
-		spec.WithRule(domain.StatusCancelled, domain.StatusPending, mockRule{allow: true, err: nil}),
-		spec.WithRule(domain.StatusCancelled, domain.StatusInTransit, mockRule{allow: true, err: nil}),
-		spec.WithRule(domain.StatusCancelled, domain.StatusDelivered, mockRule{allow: true, err: nil}),
+	ts, err := NewTransitionSpec(
+		WithRule(domain.StatusPending, domain.StatusInTransit, mockRule{allow: true, err: nil}),
+		WithRule(domain.StatusPending, domain.StatusDelivered, mockRule{allow: false, err: errMockRuleDeny}),
+		WithRule(domain.StatusPending, domain.StatusCancelled, mockRule{allow: true, err: nil}),
+		WithRule(domain.StatusInTransit, domain.StatusPending, mockRule{allow: true, err: nil}),
+		WithRule(domain.StatusInTransit, domain.StatusDelivered, mockRule{allow: true, err: nil}),
+		WithRule(domain.StatusInTransit, domain.StatusCancelled, mockRule{allow: true, err: nil}),
+		WithRule(domain.StatusDelivered, domain.StatusPending, mockRule{allow: true, err: nil}),
+		WithRule(domain.StatusDelivered, domain.StatusInTransit, mockRule{allow: true, err: nil}),
+		WithRule(domain.StatusDelivered, domain.StatusCancelled, mockRule{allow: true, err: nil}),
+		WithRule(domain.StatusCancelled, domain.StatusPending, mockRule{allow: true, err: nil}),
+		WithRule(domain.StatusCancelled, domain.StatusInTransit, mockRule{allow: true, err: nil}),
+		WithRule(domain.StatusCancelled, domain.StatusDelivered, mockRule{allow: true, err: nil}),
 	)
-
 	if err != nil {
 		t.Fatalf("Failed to setup test spec: %v", err)
 	}
@@ -94,18 +92,18 @@ func TestTransitionValidation_Check(t *testing.T) {
 
 func TestNewTransitionSpec(t *testing.T) {
 	t.Run("Successfully creates a fully populated matrix", func(t *testing.T) {
-		var opts []spec.TransitionValidationOption
+		var opts []TransitionValidationOption
 
 		for _, from := range domain.AllStatuses {
 			for _, to := range domain.AllStatuses {
 				if from == to {
 					continue
 				}
-				opts = append(opts, spec.WithRule(from, to, mockRule{allow: true}))
+				opts = append(opts, WithRule(from, to, mockRule{allow: true}))
 			}
 		}
 
-		ts, err := spec.NewTransitionSpec(opts...)
+		ts, err := NewTransitionSpec(opts...)
 		if err != nil {
 			t.Fatalf("Expected successful creation, got error: %v", err)
 		}
@@ -115,7 +113,7 @@ func TestNewTransitionSpec(t *testing.T) {
 	})
 
 	t.Run("Fails to create when edges are missing", func(t *testing.T) {
-		ts, err := spec.NewTransitionSpec()
+		ts, err := NewTransitionSpec()
 
 		if err == nil {
 			t.Fatal("Expected an error due to empty adjacency matrix, got nil")
@@ -132,10 +130,9 @@ func TestNewTransitionSpec(t *testing.T) {
 
 func TestDefaultTransitionSpec(t *testing.T) {
 	t.Run("Default configuration covers all required edges", func(t *testing.T) {
-		ts, err := spec.DefaultTransitionSpec()
-
+		ts, err := DefaultTransitionSpec()
 		if err != nil {
-			t.Fatalf("DefaultTransitionSpec is missing edges and failed to initialize: %v\nCheck if domain.AllStatuses matches the rules inside DefaultTransitionSpec.", err)
+			t.Fatalf("DefaultTransitionSpec is missing edges and failed to initialize: %v\nCheck if domain.AllStatuses matches the rules inside DefaultTransition", err)
 		}
 
 		if ts == nil {
@@ -144,7 +141,7 @@ func TestDefaultTransitionSpec(t *testing.T) {
 	})
 
 	t.Run("Default configuration rules behave as expected", func(t *testing.T) {
-		ts, err := spec.DefaultTransitionSpec()
+		ts, err := DefaultTransitionSpec()
 		if err != nil {
 			t.Fatalf("Failed to initialize default spec: %v", err)
 		}
@@ -211,7 +208,7 @@ func (d *dummySpec) Check(shipment domain.Shipment, newStatus domain.Status) (bo
 	return false, domain.ErrInvalidStatusTransition
 }
 
-func NewTransitionSpecForTestOnly() spec.StatusSpec {
+func NewTransitionSpecForTestOnly() StatusSpec {
 	return &dummySpec{
 		registry: make(map[domain.Status]map[domain.Status]domain.Rule),
 	}

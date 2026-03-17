@@ -82,7 +82,7 @@ func (r *Repo) GetHistory(ctx context.Context, shipmentID uuid.UUID) ([]app.Even
 	return dtos, nil
 }
 
-func (r *Repo) UpdateShipmentStatus(ctx context.Context, shipmentID uuid.UUID, newStatus domain.Status) ( error) {
+func (r *Repo) UpdateShipmentStatus(ctx context.Context, shipmentID uuid.UUID, newStatus domain.Status) error {
 	_, err := r.queries.UpdateShipmentStatus(ctx, sqlc.UpdateShipmentStatusParams{
 		ID:     shipmentID,
 		Status: string(newStatus),

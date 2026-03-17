@@ -37,12 +37,12 @@ func InitLogger(level string, pretty bool, logDir string) (*slog.Logger, error) 
 
 	if logDir != "" {
 		if _, err := os.Stat(logDir); os.IsNotExist(err) {
-			if err := os.MkdirAll(logDir, 0755); err != nil {
+			if err := os.MkdirAll(logDir, 0o755); err != nil {
 				return nil, fmt.Errorf("failed to create log directory: %w", err)
 			}
 		}
 		logFile := fmt.Sprintf("%s/shipment_service.log", logDir)
-		f, err := os.OpenFile(logFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		f, err := os.OpenFile(logFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644)
 		if err != nil {
 			return nil, fmt.Errorf("failed to open log file: %w", err)
 		}

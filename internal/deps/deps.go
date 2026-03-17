@@ -36,13 +36,11 @@ func NewDeps(ctx context.Context, opts ...DepsOption) (*Deps, error) {
 func WithRepository(connString string) DepsOption {
 	return func(ctx context.Context, deps *Deps) error {
 		config, err := pgxpool.ParseConfig(connString)
-
 		if err != nil {
 			return err
 		}
 
 		pool, err := pgxpool.NewWithConfig(ctx, config)
-
 		if err != nil {
 			return err
 		}
@@ -69,7 +67,6 @@ func WithGrpcServer(port string) DepsOption {
 
 func WithShipmentService() DepsOption {
 	return func(ctx context.Context, deps *Deps) error {
-
 		rules, err := spec.DefaultTransitionSpec()
 		if err != nil {
 			return err

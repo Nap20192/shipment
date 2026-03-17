@@ -3,8 +3,11 @@ package domain
 import (
 	"encoding/json"
 )
-const ShipmentCreatedEventName = "ShipmentCreated"
-const ShipmentStatusUpdatedEventName = "ShipmentStatusUpdated"
+
+const (
+	ShipmentCreatedEventName       = "ShipmentCreated"
+	ShipmentStatusUpdatedEventName = "ShipmentStatusUpdated"
+)
 
 type ShipmentCreatedEvent struct {
 	ShipmentID  string `json:"shipment_id"`

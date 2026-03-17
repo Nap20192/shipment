@@ -7,8 +7,7 @@ import (
 	"github.com/Nap20192/shipment/internal/pkg/kernel"
 )
 
-type LogSubscriber struct {
-}
+type LogSubscriber struct{}
 
 func NewLogSubscriber() *LogSubscriber {
 	return &LogSubscriber{}

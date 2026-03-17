@@ -51,7 +51,7 @@ func main() {
 	g.Go(func() error {
 		logSubscriber := app.NewLogSubscriber()
 		slog.Info("Subscribing to events with LogSubscriber")
-		dependencies.EventBus.Subscribe(app.EventBusKey,logSubscriber)
+		dependencies.EventBus.Subscribe(app.EventBusKey, logSubscriber)
 		return nil
 	})
 	g.Go(func() error {
@@ -79,5 +79,4 @@ func main() {
 		slog.Error("Server error", "error", err)
 	}
 	slog.Info("Shutting down Shipment Tracking Service")
-
 }

@@ -33,7 +33,7 @@ func main() {
 			DimensionHeight: 60,
 		},
 		DriverDetails: &pb.DriverDetails{
-			Name: "John Doe",
+			Name: "John",
 		},
 	})
 	if err != nil {

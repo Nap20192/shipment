@@ -13,9 +13,7 @@ type ShipmentService interface {
 	CreateShipment(origin, destination string, details domain.Details, driverDetails domain.DriverDetails) (domain.Shipment, error)
 }
 
-var (
-	ErrInvalidShipment error = fmt.Errorf("invalid shipment details")
-)
+var ErrInvalidShipment error = fmt.Errorf("invalid shipment details")
 
 type shipmentService struct {
 	statusSpec spec.StatusSpec

@@ -28,8 +28,7 @@ func (ts *transitionValidation) Check(shipment domain.Shipment, newStatus domain
 
 type TransitionValidationOption func(*transitionValidation)
 
-func NewTransitionSpec(opts ...TransitionValidationOption) (*transitionValidation,error){
-
+func NewTransitionSpec(opts ...TransitionValidationOption) (*transitionValidation, error) {
 	ts := &transitionValidation{
 		registry: make(map[domain.Status]map[domain.Status]domain.Rule),
 	}

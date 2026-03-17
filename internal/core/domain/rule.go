@@ -2,8 +2,10 @@ package domain
 
 import "fmt"
 
-var ErrInvalidStatusTransition error = fmt.Errorf("invalid status transition")
-var ErrAlreadyInStatus error = fmt.Errorf("shipment is already in status")
+var (
+	ErrInvalidStatusTransition error = fmt.Errorf("invalid status transition")
+	ErrAlreadyInStatus         error = fmt.Errorf("shipment is already in status")
+)
 
 type Rule interface {
 	Check(shipment Shipment, newStatus Status) (bool, error)

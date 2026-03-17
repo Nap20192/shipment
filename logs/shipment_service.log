@@ -6,3 +6,9 @@
 {"time":"2026-03-17T18:07:17.88460869Z","level":"INFO","msg":"Subscribing to events with LogSubscriber"}
 {"time":"2026-03-17T18:07:22.122768844Z","level":"DEBUG","msg":"Checking status transition","shipmentID":"444a2c59-eaaf-4fe0-aa7f-39caba82236e","currentStatus":"PENDING","newStatus":"IN_TRANSIT"}
 {"time":"2026-03-17T18:07:22.12624431Z","level":"DEBUG","msg":"Checking status transition","shipmentID":"444a2c59-eaaf-4fe0-aa7f-39caba82236e","currentStatus":"IN_TRANSIT","newStatus":"DELIVERED"}
+{"time":"2026-03-17T18:12:22.833783381Z","level":"INFO","msg":"Received signal, shutting down","signal":15}
+{"time":"2026-03-17T18:12:22.834050617Z","level":"INFO","msg":"Shutting down Shipment Tracking Service"}
+{"time":"2026-03-17T18:38:33.529112691Z","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T18:38:33.532459499Z","level":"INFO","msg":"Subscribing to events with LogSubscriber"}
+{"time":"2026-03-17T19:50:25.20622669Z","level":"INFO","msg":"Received signal, shutting down","signal":15}
+{"time":"2026-03-17T19:50:25.207071377Z","level":"INFO","msg":"Shutting down Shipment Tracking Service"}

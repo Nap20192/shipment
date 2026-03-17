@@ -9,6 +9,8 @@
 Убедитесь, что у вас установлены **Docker** и **Docker Compose**.
 Создайте файл `.env` в корне проекта (или проверьте существующий):
 
+**Файл:** `.env`
+
 ```env
 POSTGRES_HOST=postgres
 POSTGRES_PORT=5432
@@ -56,6 +58,7 @@ go test ./...
 ## Обзор архитектуры
 
 Сервис построен по принципам **чистой архитектуры** (Clean Architecture) и с применением **DDD** (Domain-Driven Design). Всего реализовано 4 слоя: Presentation, Application, Domain и Infrastructure.
+
 - **Presentation Layer**: gRPC сервер, который обрабатывает входящие запросы и возвращает ответы.
 - **Application Layer**: Это промежуточный слой, который связывает бизнес-логику с внешним миром.
 - **Domain Layer**: Содержит бизнес-логику, модели и спецификации. Здесь реализованы все правила и ограничения для управления отправлениями.
@@ -64,7 +67,10 @@ go test ./...
 ### Слои взаимодействуют друг с другом через интерфейсы
 
 Интерфейс Репозитория:
-```
+
+**Файл:** `internal/core/app/repository.go`
+
+```go
 type ShipmentRepository interface {
 	Create(ctx context.Context, shipment domain.Shipment) error
 	GetByID(ctx context.Context, id uuid.UUID) (domain.Shipment, error)
@@ -75,7 +81,10 @@ type ShipmentRepository interface {
 ```
 
 Интерфейс Сервиса:
-```
+
+**Файл:** `internal/core/app/shipment_service.go`
+
+```go
 type ShipmentService interface {
 	UpdateShipmentStatus(context.Context, string, string) (domain.Shipment, error)
 	CreateShipment(context.Context, string, string, domain.Details, domain.DriverDetails) (domain.Shipment, error)
@@ -84,18 +93,25 @@ type ShipmentService interface {
 }
 ```
 
-
 ## Паттерны проектирования:
 Для валидации бизнес-правил я использую паттерн "Спецификация" (Specification), который позволяет инкапсулировать сложные правила валидации в отдельные объекты. A также позволяет легко добавлять новые правила без изменения существующего кода.
 
-```type ShipmentStatusSpec interface {
-    Check(shipment domain.Shipment, newStatus domain.Status) (bool, error)
+**Файл:** `internal/core/domain/spec/transition_spec.go` (в коде интерфейс называется `StatusSpec`)
+
+```go
+type ShipmentStatusSpec interface {
+	Check(shipment domain.Shipment, newStatus domain.Status) (bool, error)
 }
 ```
 
 также для решения проблемы валидации состояния я использовал матрицу смежности, которая определяет допустимые переходы между статусами отправления. поскольку валидация статусов может быть сложной, я решил инкапсулировать эту логику в отдельной структуре, которая использует эту матрицу для проверки допустимости переходов.
-(matrix of allowed status transitions){./image.png}
+
+![matrix of allowed status transitions](./image.png)
+
 поскольку колличество правил переходов зависит от колличества статусов.
+
+**Файл:** `internal/core/domain/spec/transition_spec.go`
+
 ```go
 func DefaultTransitionSpec() (*transitionValidation, error) {
 	return NewTransitionSpec(
@@ -112,6 +128,8 @@ func DefaultTransitionSpec() (*transitionValidation, error) {
 }
 ```
 Я использую Фабрику для создания экземпляра спецификации, которая инициализирует эту матрицу на основе текущих статусов. и следит за количеством правил, чтобы не допустить undefined behavior при переходе в несуществующий статус. или при добавлении нового статуса, который не был учтен в матрице.
+
+**Файл:** `internal/core/domain/spec/transition_spec.go`
 
 ```go
 type transitionValidation struct {
@@ -139,6 +157,8 @@ func NewTransitionSpec(opts ...TransitionValidationOption) (*transitionValidatio
 
 Также я использую DDD паттерны как Value-Object Агрегат и Enitiy, для разделния бизнес сущностей. Например, Shipment является агрегатом, который содержит в себе сущности Event и Value-Object Details и DriverDetails. Это позволяет мне четко разделить ответственность между различными частями модели и обеспечить целостность данных внутри агрегата.
 
+**Файл:** `internal/pkg/kernel/aggregate.go`
+
 ```go
 type AggregateRoot struct {
 	domainEvents []DomainEvent
@@ -155,6 +175,9 @@ func (ar *AggregateRoot) DomainEvents() []DomainEvent {
 ```
 Агрегат в моей модели также сущность которая производит события, которые описывают изменения в состоянии отправления. Это позволяет объявлять события в бизнес-логике и обрабатывать их в инфраструктуре, например, для сохранения в базу данных или отправки уведомлений.
 Например так я создаю события:
+
+**Файл:** `internal/core/domain/service/shipment_service.go`
+
 ```go
 	shipment.ApplyDomain(domain.ShipmentStatusUpdatedEvent{
 		ShipmentID: shipment.ID.String(),
@@ -162,6 +185,9 @@ func (ar *AggregateRoot) DomainEvents() []DomainEvent {
 	})
 ```
 А так я обрабатываю события в application слое:
+
+**Файл:** `internal/core/app/shipment_service.go`
+
 ```go
     for _, event := range shipment.DomainEvents() {
         err = s.EventBus.Publish(ctx, EventBusKey, event)
@@ -171,6 +197,9 @@ func (ar *AggregateRoot) DomainEvents() []DomainEvent {
     }
 ```
 Чтобы продемонстировать использование событий, я реализовал простой EventBus, который позволяет публиковать события и подписываться на них.
+
+**Файл:** `internal/core/app/event_bus.go`
+
 ```go
 type EventHandler interface {
 	Handle(ctx context.Context, event kernel.DomainEvent) error
@@ -182,6 +211,9 @@ type EventBus struct {
 }
 ```
 как пример подписчика на события я реализовал простой логгер, который выводит информацию о каждом событии в консоль.
+
+**Файл:** `internal/core/app/subscriber.go`
+
 ```go
 func (l *LogSubscriber) Handle(ctx context.Context, event kernel.DomainEvent) error {
 	fmt.Printf("Event received: %s, Payload: %s\n", event.Name(), event.Payload())
@@ -189,6 +221,9 @@ func (l *LogSubscriber) Handle(ctx context.Context, event kernel.DomainEvent) er
 }
 ```
 Для сборки всего приложения я сделал простой DI контейнер, который позволяет регистрировать зависимости и легко получать их в нужных местах. Также для удобства сборки я использую Фабрику, для управления зависимостями
+
+**Файл:** `internal/deps/deps.go`
+
 ```go
 type Deps struct {
 	Repository app.ShipmentRepository
@@ -204,3 +239,11 @@ type Deps struct {
 
 А для генерации gRPC кода я использую buf — это инструмент для управления Protocol Buffers.
 
+
+## Допущения
+1. поскольку в задании указано сконцентрироваться на масштабируемости и архитектуре, я не стал прорабатывать сложные бизнес правила и создавать дополнительные сущности, такие как Driver,Location и т.д. Я сконцентрировался на том, чтобы продемонстрировать архитектуру и паттерны проектирования.
+2. также я отказался от использования брокера сообщений. В пользую простого EventBus, чтобы продемонстрировать как я обрабатываю и создаю события.
+3. Я не использую .gitignore, так как могут возникуть трудности с .env или сгенерированными файлами от sqlc и buf, поскольку у ревьюера может не быть нужный утилит для генерации.
+4. для удобства я не стал инкапсулировать некоторые детали в бизнес логике. Поскольку пришлось бы создавать дополнительные модели на каждом слое приложения.
+5. Также я ограничился базовыми тестами только для бизнес логики.
+6. Я использую обычный простой глобальный slog.

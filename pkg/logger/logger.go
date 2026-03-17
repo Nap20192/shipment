@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func InitLogger(level string, pretty bool) (*slog.Logger, error) {
+func InitLogger(level string, pretty bool, logDir string) (*slog.Logger, error) {
 	logLevel := slog.LevelInfo
 
 	switch level {
@@ -26,13 +26,31 @@ func InitLogger(level string, pretty bool) (*slog.Logger, error) {
 		Level: logLevel,
 	}
 
-	var handler slog.Handler
+	var TerminalHandler slog.Handler
 
 	if pretty {
-		handler = NewHandler(WithColor(true), WithLevel(logLevel), WithEncoder(JSON), WithWriter(os.Stdout))
+		TerminalHandler = NewHandler(WithColor(true), WithLevel(logLevel), WithEncoder(JSON), WithWriter(os.Stdout))
 	} else {
-		handler = slog.NewJSONHandler(os.Stdout, opts)
+		TerminalHandler = slog.NewJSONHandler(os.Stdout, opts)
 	}
-	logger := slog.New(NewHandlerMiddleware(handler))
-	return logger, nil
+	var fileHandler slog.Handler
+
+	if logDir != "" {
+		if _, err := os.Stat(logDir); os.IsNotExist(err) {
+			if err := os.MkdirAll(logDir, 0755); err != nil {
+				return nil, fmt.Errorf("failed to create log directory: %w", err)
+			}
+		}
+		logFile := fmt.Sprintf("%s/shipment_service.log", logDir)
+		f, err := os.OpenFile(logFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		if err != nil {
+			return nil, fmt.Errorf("failed to open log file: %w", err)
+		}
+		fileHandler = slog.NewJSONHandler(f, opts)
+	} else {
+		fileHandler = slog.NewJSONHandler(os.Stdout, opts)
+	}
+	log := slog.NewMultiHandler(TerminalHandler, fileHandler)
+
+	return slog.New(log), nil
 }

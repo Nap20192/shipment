@@ -1,0 +1,98 @@
+syntax = "proto3";
+
+package shipment.v1;
+
+option go_package = "github.com/Nap20192/shipment/proto/gen/shipment/v1;shipmentv1";
+
+import "google/protobuf/timestamp.proto";
+
+// --- Enums ---
+
+enum ShipmentStatus {
+  SHIPMENT_STATUS_UNSPECIFIED = 0;
+  SHIPMENT_STATUS_PENDING     = 1;
+  SHIPMENT_STATUS_IN_TRANSIT  = 2;
+  SHIPMENT_STATUS_DELIVERED   = 3;
+  SHIPMENT_STATUS_CANCELLED   = 4;
+}
+
+// --- Messages ---
+
+message ShipmentDetails {
+  double weight           = 1;
+  double dimension_length = 2;
+  double dimension_width  = 3;
+  double dimension_height = 4;
+}
+
+message DriverDetails {
+  string name = 1;
+}
+
+message Shipment {
+  string                    id             = 1;
+  string                    origin         = 2;
+  string                    destination    = 3;
+  ShipmentStatus            status         = 4;
+  double                    cost           = 5;
+  double                    revenue        = 6;
+  ShipmentDetails           details        = 7;
+  DriverDetails             driver_details = 8;
+  google.protobuf.Timestamp created_at     = 9;
+  google.protobuf.Timestamp updated_at     = 10;
+}
+
+message ShipmentEvent {
+  string                    id          = 1;
+  string                    shipment_id = 2;
+  string                    event_name  = 3;
+  bytes                     payload     = 4;
+  google.protobuf.Timestamp created_at  = 5;
+}
+
+// --- Request / Response ---
+
+message CreateShipmentRequest {
+  string          origin         = 1;
+  string          destination    = 2;
+  ShipmentDetails details        = 3;
+  DriverDetails   driver_details = 4;
+}
+
+message CreateShipmentResponse {
+  Shipment shipment = 1;
+}
+
+message GetShipmentRequest {
+  string id = 1;
+}
+
+message GetShipmentResponse {
+  Shipment shipment = 1;
+}
+
+message UpdateShipmentStatusRequest {
+  string         id         = 1;
+  ShipmentStatus new_status = 2;
+}
+
+message UpdateShipmentStatusResponse {
+  Shipment shipment = 1;
+}
+
+message GetShipmentEventHistoryRequest {
+  string shipment_id = 1;
+}
+
+message GetShipmentEventHistoryResponse {
+  repeated ShipmentEvent events = 1;
+}
+
+// --- Service ---
+
+service ShipmentService {
+  rpc CreateShipment(CreateShipmentRequest) returns (CreateShipmentResponse);
+  rpc GetShipment(GetShipmentRequest) returns (GetShipmentResponse);
+  rpc UpdateShipmentStatus(UpdateShipmentStatusRequest) returns (UpdateShipmentStatusResponse);
+  rpc GetShipmentEventHistory(GetShipmentEventHistoryRequest) returns (GetShipmentEventHistoryResponse);
+}

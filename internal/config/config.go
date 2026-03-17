@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-
-	"github.com/joho/godotenv"
 )
 
 type Config struct {
@@ -19,12 +17,7 @@ type Config struct {
 	GRPCPort   int
 }
 
-func LoadConfig() (*Config, error ){
-	err := godotenv.Load()
-	if err != nil {
-		return nil, fmt.Errorf("failed to load .env file: %w", err)
-	}
-
+func LoadConfig() (*Config, error) {
 	return &Config{
 		DBHost:     getEnv("POSTGRES_HOST", "localhost"),
 		DBPort:     getEnvInt("POSTGRES_PORT", 5432),

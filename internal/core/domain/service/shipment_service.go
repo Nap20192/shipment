@@ -2,7 +2,6 @@ package service
 
 import (
 	"fmt"
-	"log/slog"
 
 	"github.com/Nap20192/shipment/internal/core/domain"
 	"github.com/Nap20192/shipment/internal/core/domain/spec"
@@ -29,7 +28,6 @@ func NewShipmentService(statusSpec spec.StatusSpec) *shipmentService {
 }
 
 func (s *shipmentService) UpdateShipmentStatus(shipment domain.Shipment, newStatus domain.Status) (domain.Shipment, error) {
-	slog.Debug("Checking status transition", "shipmentID", shipment.ID, "currentStatus", shipment.Status, "newStatus", newStatus)
 	allowed, err := s.statusSpec.Check(shipment, newStatus)
 	if err != nil {
 		return shipment, err

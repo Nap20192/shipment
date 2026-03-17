@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:17-alpine
+    image: postgres:16
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -17,7 +17,12 @@ services:
 
   migrator:
     image: migrate/migrate
-    command: [ "-path", "/migrations", "-database", "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable", "up" ]
+    command:
+      - "-path"
+      - "/migrations"
+      - "-database"
+      - "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable"
+      - "up"
     volumes:
       - ./migrations:/migrations:ro
     depends_on:
@@ -26,15 +31,15 @@ services:
 
   app:
     build: .
-    depends_on:
-      migrator:
-        condition: service_completed_successfully
     env_file:
       - .env
     ports:
       - "${GRPC_PORT}:${GRPC_PORT}"
     volumes:
       - ./logs:/app/logs
+    depends_on:
+      migrator:
+        condition: service_completed_successfully
 
 volumes:
   postgres_data:

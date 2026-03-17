@@ -39,7 +39,3 @@ func (s *Server) Serve() error {
 func (s *Server) GracefulStop() {
 	s.grpcServer.GracefulStop()
 }
-
-func (s *Server) Addr() string {
-	return s.listener.Addr().String()
-}

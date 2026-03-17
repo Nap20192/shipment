@@ -22,5 +22,3 @@ sql:
         out: "./internal/pkg/sqlc"
         package: "sqlc"
         sql_package: "pgx/v5"
-        emit_interface: true
-        omit_unused_structs: true

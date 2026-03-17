@@ -29,3 +29,9 @@ VALUES (
 
 -- name: GetShipmentByID :one
 SELECT * FROM shipments WHERE id = $1;
+
+-- name: UpdateShipmentStatus :one
+UPDATE shipments
+SET status = $2
+WHERE id = $1
+RETURNING *;

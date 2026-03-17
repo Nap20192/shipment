@@ -113,3 +113,36 @@ func (q *Queries) GetShipmentByID(ctx context.Context, id uuid.UUID) (Shipment, 
 	)
 	return i, err
 }
+
+const updateShipmentStatus = `-- name: UpdateShipmentStatus :one
+UPDATE shipments
+SET status = $2
+WHERE id = $1
+RETURNING id, origin, destination, status, cost, revenue, weight, dimension_length, dimension_width, dimension_height, driver_name, created_at, updated_at
+`
+
+type UpdateShipmentStatusParams struct {
+	ID     uuid.UUID
+	Status string
+}
+
+func (q *Queries) UpdateShipmentStatus(ctx context.Context, arg UpdateShipmentStatusParams) (Shipment, error) {
+	row := q.db.QueryRow(ctx, updateShipmentStatus, arg.ID, arg.Status)
+	var i Shipment
+	err := row.Scan(
+		&i.ID,
+		&i.Origin,
+		&i.Destination,
+		&i.Status,
+		&i.Cost,
+		&i.Revenue,
+		&i.Weight,
+		&i.DimensionLength,
+		&i.DimensionWidth,
+		&i.DimensionHeight,
+		&i.DriverName,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}

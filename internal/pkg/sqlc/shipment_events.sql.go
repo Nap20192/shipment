@@ -9,7 +9,6 @@ import (
 	"context"
 
 	"github.com/google/uuid"
-	"github.com/jackc/pgx/v5/pgtype"
 )
 
 const addShipmentEvent = `-- name: AddShipmentEvent :one
@@ -17,39 +16,39 @@ INSERT INTO
     shipment_events (
         id,
         shipment_id,
-        status,
-        description
+        event_name,
+        payload
     )
-VALUES ($1, $2, $3, $4) RETURNING id, shipment_id, status, description, created_at
+VALUES ($1, $2, $3, $4) RETURNING id, shipment_id, event_name, payload, created_at
 `
 
 type AddShipmentEventParams struct {
-	ID          uuid.UUID
-	ShipmentID  uuid.UUID
-	Status      string
-	Description pgtype.Text
+	ID         uuid.UUID
+	ShipmentID uuid.UUID
+	EventName  string
+	Payload    []byte
 }
 
 func (q *Queries) AddShipmentEvent(ctx context.Context, arg AddShipmentEventParams) (ShipmentEvent, error) {
 	row := q.db.QueryRow(ctx, addShipmentEvent,
 		arg.ID,
 		arg.ShipmentID,
-		arg.Status,
-		arg.Description,
+		arg.EventName,
+		arg.Payload,
 	)
 	var i ShipmentEvent
 	err := row.Scan(
 		&i.ID,
 		&i.ShipmentID,
-		&i.Status,
-		&i.Description,
+		&i.EventName,
+		&i.Payload,
 		&i.CreatedAt,
 	)
 	return i, err
 }
 
 const getShipmentEventHistory = `-- name: GetShipmentEventHistory :many
-SELECT id, shipment_id, status, description, created_at
+SELECT id, shipment_id, event_name, payload, created_at
 FROM shipment_events
 WHERE
     shipment_id = $1
@@ -68,8 +67,8 @@ func (q *Queries) GetShipmentEventHistory(ctx context.Context, shipmentID uuid.U
 		if err := rows.Scan(
 			&i.ID,
 			&i.ShipmentID,
-			&i.Status,
-			&i.Description,
+			&i.EventName,
+			&i.Payload,
 			&i.CreatedAt,
 		); err != nil {
 			return nil, err

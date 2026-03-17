@@ -11,17 +11,17 @@ import (
 	"github.com/Nap20192/shipment/internal/config"
 	"github.com/Nap20192/shipment/internal/core/app"
 	"github.com/Nap20192/shipment/internal/deps"
-	"github.com/Nap20192/shipment/internal/infra"
-	"github.com/Nap20192/shipment/internal/pkg/sqlc"
-	"github.com/Nap20192/shipment/internal/presentation/grpc"
 	"github.com/Nap20192/shipment/pkg/logger"
+	"golang.org/x/sync/errgroup"
 )
 
 func main() {
-	// 1. Load Config
-	cfg := config.LoadConfig()
+	cfg, err := config.LoadConfig()
+	if err != nil {
+		fmt.Printf("Failed to load config: %v\n", err)
+		os.Exit(1)
+	}
 
-	// 2. Initialize Logger
 	logInstance, err := logger.InitLogger(cfg.LogLevel, true, cfg.LogDir)
 	if err != nil {
 		fmt.Printf("Failed to initialize logger: %v\n", err)
@@ -33,47 +33,51 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	// 3. Initialize Database Pool
-	pool, err := infra.NewPgxPool(ctx, cfg.DBConnString())
-	if err != nil {
-		slog.Error("Failed to connect to database", "error", err)
-		os.Exit(1)
-	}
-	defer pool.Close()
-
-	// 4. Initialize Dependencies
-	queries := sqlc.New(pool)
-	eventBus := app.NewEventBus()
-
-	d, err := deps.NewDeps(ctx, deps.WithShipmentService(queries, eventBus))
+	dependencies, err := deps.NewDeps(
+		ctx, deps.WithRepository(cfg.DBConnString()),
+		deps.WithEventBus(),
+		deps.WithShipmentService(),
+		deps.WithGrpcServer(cfg.GrpcPortString()),
+	)
 	if err != nil {
 		slog.Error("Failed to initialize dependencies", "error", err)
 		os.Exit(1)
 	}
+	g, gCtx := errgroup.WithContext(ctx)
 
-	// 5. Initialize gRPC Server
-	addr := fmt.Sprintf(":%d", cfg.GRPCPort)
-	server, err := grpc.NewServer(addr, d.AppService)
-	if err != nil {
-		slog.Error("Failed to create gRPC server", "error", err)
-		os.Exit(1)
-	}
-
-	// 6. Start Serving
-	go func() {
-		if err := server.Serve(); err != nil {
-			slog.Error("gRPC server failed", "error", err)
+	g.Go(func() error {
+		return dependencies.Server.Serve()
+	})
+	g.Go(func() error {
+		logSubscriber := app.NewLogSubscriber()
+		slog.Info("Subscribing to events with LogSubscriber")
+		dependencies.EventBus.Subscribe(app.EventBusKey,logSubscriber)
+		return nil
+	})
+	g.Go(func() error {
+		c := make(chan os.Signal, 1)
+		signal.Notify(c, syscall.SIGINT, syscall.SIGTERM)
+		defer signal.Stop(c)
+		select {
+		case <-gCtx.Done():
+			return nil
+		case sig := <-c:
+			slog.Info("Received signal, shutting down", "signal", sig)
+			cancel()
+			return nil
 		}
-	}()
+	})
 
-	slog.Info("Service is running", "addr", addr)
+	g.Go(func() error {
+		<-gCtx.Done()
+		dependencies.Server.GracefulStop()
+		dependencies.Pool.Close()
+		return nil
+	})
 
-	// 7. Graceful Shutdown
-	stop := make(chan os.Signal, 1)
-	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM)
+	if err := g.Wait(); err != nil {
+		slog.Error("Server error", "error", err)
+	}
+	slog.Info("Shutting down Shipment Tracking Service")
 
-	<-stop
-	slog.Info("Shutting down service...")
-	server.GracefulStop()
-	slog.Info("Service stopped gracefully")
 }

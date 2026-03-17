@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+
+	"github.com/joho/godotenv"
 )
 
 type Config struct {
@@ -17,22 +19,31 @@ type Config struct {
 	GRPCPort   int
 }
 
-func LoadConfig() *Config {
+func LoadConfig() (*Config, error ){
+	err := godotenv.Load()
+	if err != nil {
+		return nil, fmt.Errorf("failed to load .env file: %w", err)
+	}
+
 	return &Config{
-		DBHost:     getEnv("DB_HOST", "localhost"),
-		DBPort:     getEnvInt("DB_PORT", 5432),
-		DBUser:     getEnv("DB_USER", "postgres"),
-		DBPassword: getEnv("DB_PASSWORD", "postgres"),
-		DBName:     getEnv("DB_NAME", "shipment"),
-		LogLevel:   getEnv("LOG_LEVEL", "info"),
+		DBHost:     getEnv("POSTGRES_HOST", "localhost"),
+		DBPort:     getEnvInt("POSTGRES_PORT", 5432),
+		DBUser:     getEnv("POSTGRES_USER", "postgres"),
+		DBPassword: getEnv("POSTGRES_PASSWORD", "postgres"),
+		DBName:     getEnv("POSTGRES_DB", "shipment_db"),
+		LogLevel:   getEnv("LOG_LEVEL", "INFO"),
 		LogDir:     getEnv("LOG_DIR", "./logs"),
 		GRPCPort:   getEnvInt("GRPC_PORT", 50051),
-	}
+	}, nil
 }
 
 func (c *Config) DBConnString() string {
 	return fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=disable",
 		c.DBUser, c.DBPassword, c.DBHost, c.DBPort, c.DBName)
+}
+
+func (c *Config) GrpcPortString() string {
+	return fmt.Sprintf(":%d", c.GRPCPort)
 }
 
 func getEnv(key, fallback string) string {

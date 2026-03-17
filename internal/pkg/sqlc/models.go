@@ -26,9 +26,9 @@ type Shipment struct {
 }
 
 type ShipmentEvent struct {
-	ID          uuid.UUID
-	ShipmentID  uuid.UUID
-	Status      string
-	Description pgtype.Text
-	CreatedAt   pgtype.Timestamp
+	ID         uuid.UUID
+	ShipmentID uuid.UUID
+	EventName  string
+	Payload    []byte
+	CreatedAt  pgtype.Timestamp
 }

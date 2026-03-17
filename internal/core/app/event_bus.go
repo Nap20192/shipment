@@ -29,22 +29,15 @@ func (b *EventBus) Subscribe(key string, handler EventHandler) {
 	b.handlers[key] = append(b.handlers[key], handler)
 }
 
-func (b *EventBus) Publish(ctx context.Context, key string, events []kernel.DomainEvent) error {
+func (b *EventBus) Publish(ctx context.Context, key string, event kernel.DomainEvent) error {
 	var errs []error
+	b.mu.RLock()
+	handlers := b.handlers[key]
+	b.mu.RUnlock()
 
-	for _, event := range events {
-		b.mu.RLock()
-		handlers, ok := b.handlers[key]
-		b.mu.RUnlock()
-
-		if !ok {
-			continue
-		}
-
-		for _, handler := range handlers {
-			if err := handler.Handle(ctx, event); err != nil {
-				errs = append(errs, err)
-			}
+	for _, handler := range handlers {
+		if err := handler.Handle(ctx, event); err != nil {
+			errs = append(errs, err)
 		}
 	}
 

@@ -12,7 +12,6 @@ import (
 )
 
 func main() {
-	// 1. Connect to Server
 	conn, err := grpc.NewClient("localhost:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
@@ -23,7 +22,6 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
 
-	// 2. Create Shipment
 	fmt.Println("--- Creating Shipment ---")
 	createResp, err := client.CreateShipment(ctx, &pb.CreateShipmentRequest{
 		Origin:      "Warsaw, PL",
@@ -44,7 +42,6 @@ func main() {
 	shipmentID := createResp.GetShipment().GetId()
 	fmt.Printf("Created Shipment ID: %s\n", shipmentID)
 
-	// 3. Update Status (Transition from PENDING to IN_TRANSIT)
 	fmt.Println("\n--- Updating Status to IN_TRANSIT ---")
 	_, err = client.UpdateShipmentStatus(ctx, &pb.UpdateShipmentStatusRequest{
 		Id:        shipmentID,
@@ -55,7 +52,6 @@ func main() {
 	}
 	fmt.Println("Status updated to IN_TRANSIT")
 
-	// 4. Update Status (Transition from IN_TRANSIT to DELIVERED)
 	fmt.Println("\n--- Updating Status to DELIVERED ---")
 	_, err = client.UpdateShipmentStatus(ctx, &pb.UpdateShipmentStatusRequest{
 		Id:        shipmentID,
@@ -66,7 +62,6 @@ func main() {
 	}
 	fmt.Println("Status updated to DELIVERED")
 
-	// 5. Get History
 	fmt.Println("\n--- Fetching Shipment History ---")
 	historyResp, err := client.GetShipmentEventHistory(ctx, &pb.GetShipmentEventHistoryRequest{
 		ShipmentId: shipmentID,
@@ -76,9 +71,10 @@ func main() {
 	}
 
 	fmt.Printf("History for shipment %s:\n", shipmentID)
+
 	for _, event := range historyResp.GetEvents() {
-		fmt.Printf("- Event: %s, Time: %s, Description: %s\n", 
-			event.GetEventName(), 
+		fmt.Printf("- Event: %s, Time: %s, Description: %s\n",
+			event.GetEventName(),
 			event.GetCreatedAt().AsTime().Format(time.RFC3339),
 			string(event.GetPayload()))
 	}

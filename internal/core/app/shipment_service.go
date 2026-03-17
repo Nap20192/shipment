@@ -9,6 +9,8 @@ import (
 	"github.com/google/uuid"
 )
 
+var EventBusKey string = "shipment_service"
+
 type EventDTO struct {
 	ShipmentID uuid.UUID
 	EventName  string
@@ -47,27 +49,46 @@ func (s *shipmentService) CreateShipment(ctx context.Context, origin, destinatio
 	if err != nil {
 		return domain.Shipment{}, err
 	}
+	events := shipment.DomainEvents()
+
+	for _, event := range events {
+		err = s.repo.AddEvent(ctx, shipment.ID, event)
+		if err != nil {
+			return domain.Shipment{}, err
+		}
+		err = s.EventBus.Publish(ctx, EventBusKey, event)
+		if err != nil {
+			return domain.Shipment{}, err
+		}
+	}
 
 	return shipment, nil
 }
 
 func (s *shipmentService) UpdateShipmentStatus(ctx context.Context, id string, statusStr string) (domain.Shipment, error) {
-	// 1. Fetch shipment
 	shipment, err := s.GetShipment(ctx, id)
+
 	if err != nil {
 		return domain.Shipment{}, err
 	}
-
-	// 2. Call domain service
 	shipment, err = s.domainService.UpdateShipmentStatus(shipment, domain.Status(statusStr))
 	if err != nil {
 		return domain.Shipment{}, err
 	}
-
-	// 3. Save event
-	err = s.repo.AddEvent(ctx, shipment.ID, string(shipment.Status), "Status updated to "+string(shipment.Status))
+	err = s.repo.UpdateShipmentStatus(ctx, shipment.ID, shipment.Status)
 	if err != nil {
 		return domain.Shipment{}, err
+	}
+	events := shipment.DomainEvents()
+	for _, event := range events {
+		err = s.repo.AddEvent(ctx, shipment.ID, event)
+		if err != nil {
+			return domain.Shipment{}, err
+		}
+		err = s.EventBus.Publish(ctx, EventBusKey, event)
+		if err != nil {
+			return domain.Shipment{}, err
+		}
 	}
 
 	return shipment, nil

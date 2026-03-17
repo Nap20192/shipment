@@ -10,18 +10,18 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-type ShipmentHandler struct {
+type Handler struct {
 	pb.UnimplementedShipmentServiceServer
 	service app.ShipmentService
 }
 
-func NewShipmentHandler(service app.ShipmentService) *ShipmentHandler {
-	return &ShipmentHandler{
+func NewShipmentHandler(service app.ShipmentService) *Handler {
+	return &Handler{
 		service: service,
 	}
 }
 
-func (h *ShipmentHandler) CreateShipment(ctx context.Context, req *pb.CreateShipmentRequest) (*pb.CreateShipmentResponse, error) {
+func (h *Handler) CreateShipment(ctx context.Context, req *pb.CreateShipmentRequest) (*pb.CreateShipmentResponse, error) {
 	if req.GetOrigin() == "" || req.GetDestination() == "" {
 		return nil, status.Error(codes.InvalidArgument, "origin and destination are required")
 	}
@@ -49,7 +49,7 @@ func (h *ShipmentHandler) CreateShipment(ctx context.Context, req *pb.CreateShip
 	}, nil
 }
 
-func (h *ShipmentHandler) GetShipment(ctx context.Context, req *pb.GetShipmentRequest) (*pb.GetShipmentResponse, error) {
+func (h *Handler) GetShipment(ctx context.Context, req *pb.GetShipmentRequest) (*pb.GetShipmentResponse, error) {
 	if req.GetId() == "" {
 		return nil, status.Error(codes.InvalidArgument, "id is required")
 	}
@@ -64,7 +64,7 @@ func (h *ShipmentHandler) GetShipment(ctx context.Context, req *pb.GetShipmentRe
 	}, nil
 }
 
-func (h *ShipmentHandler) UpdateShipmentStatus(ctx context.Context, req *pb.UpdateShipmentStatusRequest) (*pb.UpdateShipmentStatusResponse, error) {
+func (h *Handler) UpdateShipmentStatus(ctx context.Context, req *pb.UpdateShipmentStatusRequest) (*pb.UpdateShipmentStatusResponse, error) {
 	if req.GetId() == "" {
 		return nil, status.Error(codes.InvalidArgument, "id is required")
 	}
@@ -84,7 +84,7 @@ func (h *ShipmentHandler) UpdateShipmentStatus(ctx context.Context, req *pb.Upda
 	}, nil
 }
 
-func (h *ShipmentHandler) GetShipmentEventHistory(ctx context.Context, req *pb.GetShipmentEventHistoryRequest) (*pb.GetShipmentEventHistoryResponse, error) {
+func (h *Handler) GetShipmentEventHistory(ctx context.Context, req *pb.GetShipmentEventHistoryRequest) (*pb.GetShipmentEventHistoryResponse, error) {
 	if req.GetShipmentId() == "" {
 		return nil, status.Error(codes.InvalidArgument, "shipment_id is required")
 	}

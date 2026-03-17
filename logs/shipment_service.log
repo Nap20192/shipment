@@ -100,3 +100,123 @@
 {"time":"2026-03-17T17:43:52.725428481+05:00","level":"DEBUG","msg":"qwe"}
 {"time":"2026-03-17T18:42:44.627576442+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
 {"time":"2026-03-17T18:42:44.629287484+05:00","level":"ERROR","msg":"Failed to connect to database","error":"failed to connect to `user=postgres database=shipment`:\n\t[::1]:5432 (localhost): dial error: dial tcp [::1]:5432: connect: connection refused\n\t127.0.0.1:5432 (localhost): dial error: dial tcp 127.0.0.1:5432: connect: connection refused"}
+{"time":"2026-03-17T15:18:58.281558879Z","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T15:18:58.28232981Z","level":"ERROR","msg":"Failed to connect to database","error":"failed to connect to `user=postgres database=shipment`:\n\t127.0.0.1:5432 (localhost): dial error: dial tcp 127.0.0.1:5432: connect: connection refused\n\t[::1]:5432 (localhost): dial error: dial tcp [::1]:5432: connect: connection refused"}
+{"time":"2026-03-17T15:20:46.319961737Z","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T15:20:46.320588529Z","level":"ERROR","msg":"Failed to connect to database","error":"failed to connect to `user=postgres database=shipment`:\n\t127.0.0.1:5432 (localhost): dial error: dial tcp 127.0.0.1:5432: connect: connection refused\n\t[::1]:5432 (localhost): dial error: dial tcp [::1]:5432: connect: connection refused"}
+{"time":"2026-03-17T20:22:25.058618139+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T20:22:25.061978477+05:00","level":"ERROR","msg":"Failed to connect to database","error":"failed to connect to `user=postgres database=shipment`: [::1]:5432 (localhost): failed SASL auth: FATAL: password authentication failed for user \"postgres\" (SQLSTATE 28P01)"}
+{"time":"2026-03-17T20:23:22.129420433+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T20:23:22.132807783+05:00","level":"ERROR","msg":"Failed to connect to database","error":"failed to connect to `user=postgres database=shipment`: [::1]:5432 (localhost): failed SASL auth: FATAL: password authentication failed for user \"postgres\" (SQLSTATE 28P01)"}
+{"time":"2026-03-17T20:26:29.78126819+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T20:26:29.784515644+05:00","level":"ERROR","msg":"Failed to connect to database","error":"failed to connect to `user=postgres database=shipment`: [::1]:5432 (localhost): failed SASL auth: FATAL: password authentication failed for user \"postgres\" (SQLSTATE 28P01)"}
+{"time":"2026-03-17T20:27:04.441500658+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T20:27:04.444698112+05:00","level":"ERROR","msg":"Failed to connect to database","error":"failed to connect to `user=postgres database=shipment`: [::1]:5432 (localhost): failed SASL auth: FATAL: password authentication failed for user \"postgres\" (SQLSTATE 28P01)"}
+{"time":"2026-03-17T20:29:12.95564905+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T20:29:12.958792155+05:00","level":"ERROR","msg":"Failed to connect to database","error":"failed to connect to `user=postgres database=shipment`: [::1]:5432 (localhost): failed SASL auth: FATAL: password authentication failed for user \"postgres\" (SQLSTATE 28P01)"}
+{"time":"2026-03-17T20:29:22.783280055+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T20:29:22.786444366+05:00","level":"ERROR","msg":"Failed to connect to database","error":"failed to connect to `user=postgres database=shipment`: [::1]:5432 (localhost): failed SASL auth: FATAL: password authentication failed for user \"postgres\" (SQLSTATE 28P01)"}
+{"time":"2026-03-17T20:29:43.070614354+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T20:29:43.073801578+05:00","level":"ERROR","msg":"Failed to connect to database","error":"failed to connect to `user=postgres database=shipment`: [::1]:5432 (localhost): failed SASL auth: FATAL: password authentication failed for user \"postgres\" (SQLSTATE 28P01)"}
+{"time":"2026-03-17T20:29:54.297051874+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T20:29:54.300284585+05:00","level":"ERROR","msg":"Failed to connect to database","error":"failed to connect to `user=postgres database=shipment`: [::1]:5432 (localhost): failed SASL auth: FATAL: password authentication failed for user \"postgres\" (SQLSTATE 28P01)"}
+{"time":"2026-03-17T20:32:03.196290902+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T20:32:03.201042543+05:00","level":"INFO","msg":"Service is running","addr":":50051"}
+{"time":"2026-03-17T20:34:47.954048126+05:00","level":"INFO","msg":"Shutting down service..."}
+{"time":"2026-03-17T20:34:47.95423062+05:00","level":"INFO","msg":"Service stopped gracefully"}
+{"time":"2026-03-17T15:36:40.254556923Z","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T15:36:40.255161121Z","level":"ERROR","msg":"Failed to connect to database","error":"failed to connect to `user=postgres database=shipment`:\n\t127.0.0.1:5432 (localhost): dial error: dial tcp 127.0.0.1:5432: connect: connection refused\n\t[::1]:5432 (localhost): dial error: dial tcp [::1]:5432: connect: connection refused"}
+{"time":"2026-03-17T15:37:12.113372808Z","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T15:37:12.117159197Z","level":"INFO","msg":"Service is running","addr":":50051"}
+{"time":"2026-03-17T15:39:52.490854092Z","level":"INFO","msg":"Shutting down service..."}
+{"time":"2026-03-17T15:39:52.490982298Z","level":"INFO","msg":"Service stopped gracefully"}
+{"time":"2026-03-17T15:41:20.320515603Z","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T15:41:20.323812058Z","level":"INFO","msg":"Service is running","addr":":50051"}
+{"time":"2026-03-17T20:56:38.398923514+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T20:56:43.570509822+05:00","level":"ERROR","msg":"Failed to connect to database","error":"failed to connect to `user=postgres database=shipment_db`: hostname resolving error: lookup postgres: no such host"}
+{"time":"2026-03-17T20:57:06.924051999+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T20:57:06.927933052+05:00","level":"ERROR","msg":"Failed to create gRPC server","error":"listen tcp :50051: bind: address already in use"}
+{"time":"2026-03-17T15:57:21.861846533Z","level":"INFO","msg":"Shutting down service..."}
+{"time":"2026-03-17T15:57:21.861945041Z","level":"INFO","msg":"Service stopped gracefully"}
+{"time":"2026-03-17T20:57:26.04233811+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T20:57:26.046115109+05:00","level":"INFO","msg":"Service is running","addr":":50051"}
+{"time":"2026-03-17T21:35:26.942702608+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T21:37:03.680536011+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T21:40:04.824676186+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T21:40:04.828838408+05:00","level":"ERROR","msg":"Failed to initialize dependencies","error":"listen tcp :50051: bind: address already in use"}
+{"time":"2026-03-17T21:40:24.164197286+05:00","level":"INFO","msg":"Shutting down service..."}
+{"time":"2026-03-17T21:40:24.164418307+05:00","level":"INFO","msg":"Service stopped gracefully"}
+{"time":"2026-03-17T21:40:33.386598006+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T21:52:31.859545066+05:00","level":"INFO","msg":"Received signal, shutting down","signal":2}
+{"time":"2026-03-17T21:52:31.859913957+05:00","level":"INFO","msg":"Shutting down Shipment Tracking Service"}
+{"time":"2026-03-17T21:52:33.483509905+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T21:52:53.740443794+05:00","level":"INFO","msg":"Received signal, shutting down","signal":2}
+{"time":"2026-03-17T21:52:53.740758411+05:00","level":"INFO","msg":"Shutting down Shipment Tracking Service"}
+{"time":"2026-03-17T21:52:59.085612082+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T21:53:32.831234112+05:00","level":"INFO","msg":"Received signal, shutting down","signal":2}
+{"time":"2026-03-17T21:53:32.831607811+05:00","level":"INFO","msg":"Shutting down Shipment Tracking Service"}
+{"time":"2026-03-17T21:53:46.890158761+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T21:56:42.759086966+05:00","level":"INFO","msg":"Received signal, shutting down","signal":2}
+{"time":"2026-03-17T21:56:42.759412209+05:00","level":"INFO","msg":"Shutting down Shipment Tracking Service"}
+{"time":"2026-03-17T21:56:43.807479914+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T21:57:06.559142934+05:00","level":"INFO","msg":"Received signal, shutting down","signal":2}
+{"time":"2026-03-17T21:57:06.559444075+05:00","level":"INFO","msg":"Shutting down Shipment Tracking Service"}
+{"time":"2026-03-17T21:57:07.714026569+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T21:57:09.388737937+05:00","level":"DEBUG","msg":"Publishing event","key":"shipment_service","event":"ShipmentCreated"}
+{"time":"2026-03-17T21:57:09.390733717+05:00","level":"DEBUG","msg":"Publishing event","key":"shipment_service","event":"ShipmentStatusUpdated"}
+{"time":"2026-03-17T21:57:37.534592814+05:00","level":"INFO","msg":"Received signal, shutting down","signal":2}
+{"time":"2026-03-17T21:57:37.534930771+05:00","level":"INFO","msg":"Shutting down Shipment Tracking Service"}
+{"time":"2026-03-17T21:57:38.506974525+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T21:57:38.511234477+05:00","level":"INFO","msg":"Subscribing to events with LogSubscriber"}
+{"time":"2026-03-17T21:57:43.169088354+05:00","level":"DEBUG","msg":"Publishing event","key":"shipment_service","event":"ShipmentCreated"}
+{"time":"2026-03-17T21:57:43.171487281+05:00","level":"DEBUG","msg":"Publishing event","key":"shipment_service","event":"ShipmentStatusUpdated"}
+{"time":"2026-03-17T21:58:19.567160677+05:00","level":"INFO","msg":"Received signal, shutting down","signal":2}
+{"time":"2026-03-17T21:58:19.567519393+05:00","level":"INFO","msg":"Shutting down Shipment Tracking Service"}
+{"time":"2026-03-17T21:58:20.698001221+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T21:58:20.701704814+05:00","level":"INFO","msg":"Subscribing to events with LogSubscriber"}
+{"time":"2026-03-17T21:58:22.707991071+05:00","level":"DEBUG","msg":"Publishing event","key":"shipment_service","event":"ShipmentCreated"}
+{"time":"2026-03-17T21:58:22.710028428+05:00","level":"DEBUG","msg":"Publishing event","key":"shipment_service","event":"ShipmentStatusUpdated"}
+{"time":"2026-03-17T21:59:28.97349331+05:00","level":"INFO","msg":"Received signal, shutting down","signal":2}
+{"time":"2026-03-17T21:59:28.973830128+05:00","level":"INFO","msg":"Shutting down Shipment Tracking Service"}
+{"time":"2026-03-17T21:59:29.881795378+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T21:59:29.886323773+05:00","level":"INFO","msg":"Subscribing to events with LogSubscriber"}
+{"time":"2026-03-17T21:59:32.070570634+05:00","level":"DEBUG","msg":"Publishing event","key":"shipment_service","event":"ShipmentCreated"}
+{"time":"2026-03-17T21:59:32.070617444+05:00","level":"DEBUG","msg":"qwe"}
+{"time":"2026-03-17T21:59:32.072657848+05:00","level":"DEBUG","msg":"Publishing event","key":"shipment_service","event":"ShipmentStatusUpdated"}
+{"time":"2026-03-17T21:59:32.072697895+05:00","level":"DEBUG","msg":"qwe"}
+{"time":"2026-03-17T22:00:23.728532285+05:00","level":"DEBUG","msg":"Publishing event","key":"shipment_service","event":"ShipmentCreated"}
+{"time":"2026-03-17T22:00:23.728587094+05:00","level":"DEBUG","msg":"qwe"}
+{"time":"2026-03-17T22:00:23.730440375+05:00","level":"DEBUG","msg":"Publishing event","key":"shipment_service","event":"ShipmentStatusUpdated"}
+{"time":"2026-03-17T22:00:23.730483382+05:00","level":"DEBUG","msg":"qwe"}
+{"time":"2026-03-17T22:00:26.347983953+05:00","level":"INFO","msg":"Received signal, shutting down","signal":2}
+{"time":"2026-03-17T22:00:26.348474539+05:00","level":"INFO","msg":"Shutting down Shipment Tracking Service"}
+{"time":"2026-03-17T22:00:32.571851787+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T22:00:32.575965461+05:00","level":"INFO","msg":"Subscribing to events with LogSubscriber"}
+{"time":"2026-03-17T22:02:54.78693763+05:00","level":"INFO","msg":"Received signal, shutting down","signal":2}
+{"time":"2026-03-17T22:02:54.787493721+05:00","level":"INFO","msg":"Shutting down Shipment Tracking Service"}
+{"time":"2026-03-17T22:02:55.845869586+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T22:02:55.849859415+05:00","level":"INFO","msg":"Subscribing to events with LogSubscriber"}
+{"time":"2026-03-17T22:02:58.123721735+05:00","level":"DEBUG","msg":"Checking status transition","shipmentID":"414eb86b-ab08-4325-a949-79404a8fa27f","currentStatus":"PENDING","newStatus":"IN_TRANSIT"}
+{"time":"2026-03-17T22:02:58.12554974+05:00","level":"DEBUG","msg":"Checking status transition","shipmentID":"414eb86b-ab08-4325-a949-79404a8fa27f","currentStatus":"PENDING","newStatus":"DELIVERED"}
+{"time":"2026-03-17T22:03:49.819411843+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T22:03:49.82331359+05:00","level":"ERROR","msg":"Failed to initialize dependencies","error":"listen tcp :50051: bind: address already in use"}
+{"time":"2026-03-17T22:11:01.214256825+05:00","level":"INFO","msg":"Received signal, shutting down","signal":2}
+{"time":"2026-03-17T22:11:01.214576575+05:00","level":"INFO","msg":"Shutting down Shipment Tracking Service"}
+{"time":"2026-03-17T22:11:02.807111869+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T22:11:02.811331892+05:00","level":"INFO","msg":"Subscribing to events with LogSubscriber"}
+{"time":"2026-03-17T22:11:07.600369959+05:00","level":"DEBUG","msg":"Checking status transition","shipmentID":"899a58b7-2bcf-4790-bc79-330603d777e1","currentStatus":"PENDING","newStatus":"IN_TRANSIT"}
+{"time":"2026-03-17T22:11:07.602198758+05:00","level":"DEBUG","msg":"Checking status transition","shipmentID":"899a58b7-2bcf-4790-bc79-330603d777e1","currentStatus":"PENDING","newStatus":"DELIVERED"}
+{"time":"2026-03-17T22:14:16.240898305+05:00","level":"INFO","msg":"Received signal, shutting down","signal":2}
+{"time":"2026-03-17T22:14:16.24136319+05:00","level":"INFO","msg":"Shutting down Shipment Tracking Service"}
+{"time":"2026-03-17T22:14:17.842219737+05:00","level":"INFO","msg":"Starting Shipment Tracking Service","port":50051}
+{"time":"2026-03-17T22:14:17.846039031+05:00","level":"INFO","msg":"Subscribing to events with LogSubscriber"}
+{"time":"2026-03-17T22:14:19.990319767+05:00","level":"DEBUG","msg":"Checking status transition","shipmentID":"14d8b6f3-e4ef-4c3a-a0fd-4ba82e653955","currentStatus":"PENDING","newStatus":"IN_TRANSIT"}
+{"time":"2026-03-17T22:14:19.994730753+05:00","level":"DEBUG","msg":"Checking status transition","shipmentID":"14d8b6f3-e4ef-4c3a-a0fd-4ba82e653955","currentStatus":"IN_TRANSIT","newStatus":"DELIVERED"}
+{"time":"2026-03-17T22:14:32.960434501+05:00","level":"DEBUG","msg":"Checking status transition","shipmentID":"fe1a7ca6-6321-4bb9-96b1-9d7a7e910819","currentStatus":"PENDING","newStatus":"IN_TRANSIT"}
+{"time":"2026-03-17T22:14:32.963585209+05:00","level":"DEBUG","msg":"Checking status transition","shipmentID":"fe1a7ca6-6321-4bb9-96b1-9d7a7e910819","currentStatus":"IN_TRANSIT","newStatus":"DELIVERED"}
+{"time":"2026-03-17T22:15:16.804205741+05:00","level":"DEBUG","msg":"Checking status transition","shipmentID":"a5b98515-b569-4c3f-88ae-38776576d7a5","currentStatus":"PENDING","newStatus":"IN_TRANSIT"}
+{"time":"2026-03-17T22:15:16.807709399+05:00","level":"DEBUG","msg":"Checking status transition","shipmentID":"a5b98515-b569-4c3f-88ae-38776576d7a5","currentStatus":"IN_TRANSIT","newStatus":"IN_TRANSIT"}
+{"time":"2026-03-17T22:15:35.871713579+05:00","level":"DEBUG","msg":"Checking status transition","shipmentID":"7857df4e-c3c9-4148-9e36-5e8eb3d5288b","currentStatus":"PENDING","newStatus":"IN_TRANSIT"}
+{"time":"2026-03-17T22:15:35.874714978+05:00","level":"DEBUG","msg":"Checking status transition","shipmentID":"7857df4e-c3c9-4148-9e36-5e8eb3d5288b","currentStatus":"IN_TRANSIT","newStatus":"PENDING"}
+{"time":"2026-03-17T22:16:26.690542463+05:00","level":"DEBUG","msg":"Checking status transition","shipmentID":"fd503e77-e10c-452e-a3e2-894ffff2d20c","currentStatus":"PENDING","newStatus":"IN_TRANSIT"}
+{"time":"2026-03-17T22:16:26.693655447+05:00","level":"DEBUG","msg":"Checking status transition","shipmentID":"fd503e77-e10c-452e-a3e2-894ffff2d20c","currentStatus":"IN_TRANSIT","newStatus":"DELIVERED"}

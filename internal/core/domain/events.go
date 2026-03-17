@@ -3,6 +3,8 @@ package domain
 import (
 	"encoding/json"
 )
+const ShipmentCreatedEventName = "ShipmentCreated"
+const ShipmentStatusUpdatedEventName = "ShipmentStatusUpdated"
 
 type ShipmentCreatedEvent struct {
 	ShipmentID  string `json:"shipment_id"`
@@ -11,7 +13,7 @@ type ShipmentCreatedEvent struct {
 }
 
 func (e ShipmentCreatedEvent) Name() string {
-	return "ShipmentCreated"
+	return ShipmentCreatedEventName
 }
 
 func (e ShipmentCreatedEvent) Payload() []byte {
@@ -24,11 +26,11 @@ func (e ShipmentCreatedEvent) Payload() []byte {
 
 type ShipmentStatusUpdatedEvent struct {
 	ShipmentID string `json:"shipment_id"`
-	NewStatus  string `json:"new_status"`
+	NewStatus  Status `json:"new_status"`
 }
 
 func (e ShipmentStatusUpdatedEvent) Name() string {
-	return "ShipmentStatusUpdated"
+	return ShipmentStatusUpdatedEventName
 }
 
 func (e ShipmentStatusUpdatedEvent) Payload() []byte {

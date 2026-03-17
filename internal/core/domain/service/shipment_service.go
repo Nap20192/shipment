@@ -36,6 +36,12 @@ func (s *shipmentService) UpdateShipmentStatus(shipment domain.Shipment, newStat
 	}
 
 	shipment.Status = newStatus
+
+	shipment.ApplyDomain(domain.ShipmentStatusUpdatedEvent{
+		ShipmentID: shipment.ID.String(),
+		NewStatus:  newStatus,
+	})
+
 	return shipment, nil
 }
 
@@ -48,8 +54,7 @@ func (s *shipmentService) CreateShipment(origin, destination string, details dom
 	}
 
 	cost, revenue := domain.CalculateBasicCost(details)
-
-	return domain.Shipment{
+	shipment := domain.Shipment{
 		ID:            uuid.New(),
 		Origin:        origin,
 		Destination:   destination,
@@ -58,5 +63,12 @@ func (s *shipmentService) CreateShipment(origin, destination string, details dom
 		Revenue:       revenue,
 		Details:       details,
 		DriverDetails: driverDetails,
-	}, nil
+	}
+	shipment.ApplyDomain(domain.ShipmentCreatedEvent{
+		ShipmentID:  shipment.ID.String(),
+		Origin:      shipment.Origin,
+		Destination: shipment.Destination,
+	})
+
+	return shipment, nil
 }

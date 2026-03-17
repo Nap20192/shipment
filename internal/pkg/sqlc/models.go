@@ -29,6 +29,6 @@ type ShipmentEvent struct {
 	ID          uuid.UUID
 	ShipmentID  uuid.UUID
 	Status      string
-	Description *string
+	Description pgtype.Text
 	CreatedAt   pgtype.Timestamp
 }

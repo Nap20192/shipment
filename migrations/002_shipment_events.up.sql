@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS shipment_events (
     id UUID PRIMARY KEY,
     shipment_id UUID NOT NULL REFERENCES shipments (id),
-    status VARCHAR(50) NOT NULL,
-    description TEXT,
+    event_name VARCHAR(255) NOT NULL,
+    payload JSONB,
     created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 

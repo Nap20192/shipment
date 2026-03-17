@@ -9,6 +9,7 @@ import (
 	"context"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 const addShipmentEvent = `-- name: AddShipmentEvent :one
@@ -26,7 +27,7 @@ type AddShipmentEventParams struct {
 	ID          uuid.UUID
 	ShipmentID  uuid.UUID
 	Status      string
-	Description *string
+	Description pgtype.Text
 }
 
 func (q *Queries) AddShipmentEvent(ctx context.Context, arg AddShipmentEventParams) (ShipmentEvent, error) {

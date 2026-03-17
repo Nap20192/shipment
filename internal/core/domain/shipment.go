@@ -35,6 +35,13 @@ const (
 	StatusCancelled Status = "CANCELLED"
 )
 
+var AllStatuses = []Status{
+	StatusPending,
+	StatusInTransit,
+	StatusDelivered,
+	StatusCancelled,
+}
+
 const (
 	BaseFee       float64 = 10.0
 	RatePerKg     float64 = 2.0

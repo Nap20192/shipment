@@ -3,8 +3,8 @@ INSERT INTO
     shipment_events (
         id,
         shipment_id,
-        status,
-        description
+        event_name,
+        payload
     )
 VALUES ($1, $2, $3, $4) RETURNING *;
 

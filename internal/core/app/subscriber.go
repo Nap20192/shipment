@@ -6,14 +6,14 @@ import (
 	"github.com/Nap20192/shipment/internal/pkg/kernel"
 )
 
-type LogHandler struct {
+type LogSubscriber struct {
 }
 
-func NewLogHandler() *LogHandler {
-	return &LogHandler{}
+func NewLogSubscriber() *LogSubscriber {
+	return &LogSubscriber{}
 }
 
-func (h *LogHandler) Handle(event kernel.DomainEvent) error {
+func (l *LogSubscriber) Handle(event kernel.DomainEvent) error {
 	fmt.Printf("Event: %s, Payload: %+v\n", event.Name(), event.Payload())
 	return nil
 }

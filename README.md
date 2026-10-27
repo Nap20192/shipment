@@ -1,5 +1,11 @@
 <!-- markdownlint-disable MD010 -->
 
+[Русская версия → RU_README.md](RU_README.md)
+
+# Shipment Tracking Service
+
+---
+
 ## Local configuration
 
 Before starting the application, copy the example configuration:
@@ -9,13 +15,6 @@ cp .env.example .env
 ```
 
 Set local values in `.env`. This file is ignored by Git. Use separate credentials for deployed environments.
-
-
-[Русская версия → RU_README.md](RU_README.md)
-
-# Shipment Tracking Service
-
----
 
 ## How to run the service
 
